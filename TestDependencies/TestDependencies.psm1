@@ -13,5 +13,5 @@ function Test-Dependencies {
     $cmd = [System.Data.SQLite.SQLiteCommand]::new($stm, $con)
     $version = $cmd.ExecuteScalar().ToString();
 
-    Write-Host "SQLite version: $version"
+    Return "SQLite version: $version"
 }

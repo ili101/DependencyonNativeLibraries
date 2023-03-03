@@ -1,0 +1,22 @@
+name: Pode CI
+
+on: push
+
+jobs:
+  pester-test:
+    name: Pester test
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+
+    - name: Perform a Pester test from the Tests.ps1 file
+      shell: pwsh
+      run: |
+        Invoke-Pester -Passthru
