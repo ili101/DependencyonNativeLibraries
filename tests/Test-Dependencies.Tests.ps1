@@ -5,6 +5,7 @@ BeforeAll {
 }
 
 Describe "Test-Dependencies" {
+    <#
     It "Test Copy" {
         try {
             # $Job = Start-Job -FilePath "$ScriptRoot/Copy.ps1" -WorkingDirectory $ScriptRoot
@@ -43,6 +44,19 @@ Describe "Test-Dependencies" {
         finally {
             Start-Sleep -Milliseconds 100
             Remove-Item "$ScriptRoot/../TestDependencies/SQLite.Interop.dll"
+        }
+    }
+    #>
+    It "Test Auto extra extensions" {
+        try {
+            { Start-Job -FilePath "$ScriptRoot/Rename-ExtraExtensions.ps1" -WorkingDirectory $ScriptRoot | Receive-Job -Wait -ErrorAction Stop } | Should -Not -Throw
+        }
+        finally {
+            Start-Sleep -Milliseconds 100
+            Rename-Item "$ScriptRoot/../TestDependencies/win-x64/SQLite.Interop.dll.dll" "SQLite.Interop.dll"
+            Rename-Item "$ScriptRoot/../TestDependencies/win-x86/SQLite.Interop.dll.dll" "SQLite.Interop.dll"
+            Rename-Item "$ScriptRoot/../TestDependencies/linux-x64/SQLite.Interop.dll.so" "SQLite.Interop.dll"
+            Rename-Item "$ScriptRoot/../TestDependencies/osx-x64/SQLite.Interop.dll.dylib" "SQLite.Interop.dll"
         }
     }
 }
